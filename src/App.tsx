@@ -6,37 +6,61 @@ import './App.css'
 import {ButtonSuper} from "./ButtonSuper";
 
 function App() {
-    // let minCount=0
-    // let maxCount=5
     let [minCount, setMinCount] = useState<number>(0)
     let [maxCount, setMaxCount] = useState<number>(5)
     let [count, setCount] = useState<any>(minCount)
     let [makeSettings, setMakeSettings] = useState<boolean>(false)
-    let [error, setError] = useState('')
+    let [error, setError] = useState(false)
+
+    useEffect(() => {
+        let itemMin = localStorage.getItem('minCount')
+        if (itemMin != null) {
+            setMinCount(JSON.parse(itemMin))
+        } else {
+            setMinCount(0)
+        }
+        let itemMax = localStorage.getItem('maxCount')
+        if (itemMax != null) {
+            setMaxCount(JSON.parse(itemMax))
+        } else {
+            setMaxCount(5)
+        }
+    }, [])
 
     const addCount = () => {
         if (count < maxCount) {
             setCount(++count)
         }
     }
-    let changeMinCount=(minNum:number)=>{
+    let changeMinCount = (minNum: number) => {
         console.log(`inside ${minNum}`)
-        if (minNum>=0 && maxCount!==minNum) {
+        if (minNum >= 0 && maxCount > minNum) {
             setMinCount(minNum)
+        } else if (minNum === -1 || maxCount === minNum) {
+            setMinCount(minNum)
+            setError(true)
+            setCount('not correct value')
         } else {
             setCount('not correct value')
+            setError(true)
         }
     }
-    let changeMaxCount=(maxNum:number)=>{
+    let changeMaxCount = (maxNum: number) => {
         console.log(`inside max ${maxNum}`)
-        if (minCount!==maxNum) {
+        if (minCount < maxNum) {
             setMaxCount(maxNum)
+        } else if (minCount === maxNum) {
+            setMaxCount(maxNum)
+            setError(true)
+            setCount('not correct value')
         } else {
             setCount('not correct value')
+            setError(true)
         }
     }
     let changeMinCountHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setCount("input value and press set")
+        setError(false)
         let currentNumber = +e.currentTarget.value
         changeMinCount(currentNumber)
     }
@@ -46,11 +70,14 @@ function App() {
 
     let changeMaxCountHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setCount("input value and press set")
+        setError(false)
         changeMaxCount(+e.currentTarget.value)
     }
     let onClickSetHandler = () => {
         setCount(minCount)
         setMakeSettings(false)
+        localStorage.setItem('minCount', JSON.stringify(minCount))
+        localStorage.setItem('maxCount', JSON.stringify(maxCount))
     }
     let onFocusHandler = () => {
         setMakeSettings(true)
@@ -75,7 +102,7 @@ function App() {
                 </div>
                 <div className={'borderMain'}>
                     <div className={'controls'}>
-                        <ButtonSuper title={'SET'} callback={onClickSetHandler} disabled={!makeSettings}/>
+                        <ButtonSuper title={'SET'} callback={onClickSetHandler} disabled={!makeSettings || error}/>
                     </div>
                 </div>
 

@@ -2,15 +2,17 @@ import React from "react";
 import './App.css'
 
 type propsType={
-    count:any
+    count:number | string
+    makeSettings:boolean
 }
 
 export const Led=(props: propsType)=>{
 
     return(
-        <div className={"textDisplay"}>
-            {props.count}
-            {/*<textarea value={props.count} className={'textDisplay'}/>*/}
-        </div>
+        props.makeSettings
+            ?<span className={"textDisplayError"}>{props.count}</span>
+            :<div className={"textDisplay"}>
+                {props.count}
+            </div>
     )
 }

@@ -110,7 +110,7 @@ function App() {
             </div>
             <div className="App">
                 <div className={'led'}>
-                    <Led count={count}/>
+                    <Led count={count} makeSettings={makeSettings} />
                 </div>
 
                 <div className={'borderMain'}>

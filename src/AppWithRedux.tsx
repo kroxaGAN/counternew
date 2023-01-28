@@ -6,11 +6,11 @@ import './App.css'
 import {ButtonSuper} from "./ButtonSuper";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store";
-import {initialStateType, setMinCountAC} from "./reducers/minCountReducers";
+import {setMinCountAC} from "./reducers/minCountReducers";
 
 function AppWithRedux() {
     let dispatch=useDispatch()
-    let minCount=useSelector<AppRootStateType,initialStateType | number>(state=>state.minCount)
+    let minCount=useSelector<AppRootStateType,number>(state=>state.minCount)
     // let [minCount, setMinCount] = useState<number>(0)
     let [maxCount, setMaxCount] = useState<number>(5)
     let [count, setCount] = useState<any>(minCount)

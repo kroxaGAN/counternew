@@ -7,12 +7,14 @@ import {ButtonSuper} from "./ButtonSuper";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store";
 import {setMinCountAC} from "./reducers/minCountReducers";
+import {setMaxCountAC} from "./reducers/maxCountReducers";
 
 function AppWithRedux() {
     let dispatch=useDispatch()
     let minCount=useSelector<AppRootStateType,number>(state=>state.minCount)
+    let maxCount=useSelector<AppRootStateType,number>(state=>state.maxCount)
     // let [minCount, setMinCount] = useState<number>(0)
-    let [maxCount, setMaxCount] = useState<number>(5)
+    // let [maxCount, setMaxCount] = useState<number>(5)
     let [count, setCount] = useState<any>(minCount)
     let [makeSettings, setMakeSettings] = useState<boolean>(false)
     let [error, setError] = useState(false)
@@ -28,9 +30,11 @@ function AppWithRedux() {
         }
         let itemMax = localStorage.getItem('maxCount')
         if (itemMax != null) {
-            setMaxCount(JSON.parse(itemMax))
+            // setMaxCount(JSON.parse(itemMax))
+            dispatch(setMaxCountAC(+itemMax))
         } else {
-            setMaxCount(5)
+            // setMaxCount(5)
+            dispatch(setMaxCountAC(5))
         }
     }, [])
 
@@ -54,19 +58,19 @@ function AppWithRedux() {
     //         setError(true)
     //     }
     // }
-    let changeMaxCount = (maxNum: number) => {
-        console.log(`inside max ${maxNum}`)
-        if (minCount < maxNum) {
-            setMaxCount(maxNum)
-        } else if (minCount === maxNum) {
-            setMaxCount(maxNum)
-            setError(true)
-            setCount('not correct value')
-        } else {
-            setCount('not correct value')
-            setError(true)
-        }
-    }
+    // let changeMaxCount = (maxNum: number) => {
+    //     console.log(`inside max ${maxNum}`)
+    //     if (minCount < maxNum) {
+    //         setMaxCount(maxNum)
+    //     } else if (minCount === maxNum) {
+    //         setMaxCount(maxNum)
+    //         setError(true)
+    //         setCount('not correct value')
+    //     } else {
+    //         setCount('not correct value')
+    //         setError(true)
+    //     }
+    // }
     let changeMinCountHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setCount("input value and press set")
         setError(false)
@@ -92,7 +96,8 @@ function AppWithRedux() {
     let changeMaxCountHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setCount("input value and press set")
         setError(false)
-        changeMaxCount(+e.currentTarget.value)
+        // changeMaxCount(+e.currentTarget.value)
+        dispatch(setMaxCountAC(+e.currentTarget.value))
     }
     let onClickSetHandler = () => {
         setCount(minCount)

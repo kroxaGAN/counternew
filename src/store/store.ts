@@ -1,11 +1,13 @@
 // import { combineReducers, createStore } from 'redux'
 import {MinCountReducers} from "../reducers/minCountReducers";
 import {combineReducers, legacy_createStore} from "redux";
+import {MaxCountReducers} from "../reducers/maxCountReducers";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
 const rootReducer = combineReducers({
-    minCount:MinCountReducers
+    minCount:MinCountReducers,
+    maxCount:MaxCountReducers
     // tasks: tasksReducer,
     // todolists: todolistsReducer
 })
